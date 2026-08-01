@@ -1,30 +1,37 @@
-mod pila;
 mod balanceador;
+mod pila;
+mod precedencia;
+mod reglas;
+mod shunting_yard;
 
 use std::fs;
 
 fn main() {
+    println!("==========================================");
+    println!(" Conversión Infix a Postfix - Shunting Yard");
+    println!("==========================================");
 
-    println!("==================================");
-    println!(" Balanceador de Expresiones Infix ");
-    println!("==================================");
+    let contenido = fs::read_to_string("expresiones_problema3.txt")
+        .expect("No fue posible abrir expresiones_problema3.txt");
 
-    let contenido = fs::read_to_string("expresiones.txt")
-        .expect("No fue posible abrir expresiones.txt");
+    for (indice, linea) in contenido.lines().enumerate() {
+        let expresion = linea.trim();
 
-    for linea in contenido.lines() {
-
-        let resultado = balanceador::verificar_balanceo(linea);
-
-        if resultado {
-
-            println!("Resultado: Balanceada");
-
-        } else {
-
-            println!("Resultado: No balanceada");
+        if expresion.is_empty() {
+            continue;
         }
 
-        println!("--------------------------------------");
+        println!("\n------------------------------------------");
+        println!("Expresión número {}", indice + 1);
+        println!("------------------------------------------");
+
+        match shunting_yard::convertir_a_postfix(expresion) {
+            Ok(postfix) => {
+                println!("Resultado postfix: {}", postfix);
+            }
+            Err(error) => {
+                println!("Estado actual: {}", error);
+            }
+        }
     }
 }
