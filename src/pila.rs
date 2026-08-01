@@ -9,17 +9,33 @@ impl Pila {
         }
     }
 
-    pub fn insertar(&mut self, valor: char) {}
+    pub fn insertar(&mut self, valor: char) {
+        self.elementos.push(valor);
+    }
 
     pub fn extraer(&mut self) -> Option<char> {
-        None
+        self.elementos.pop()
     }
 
     pub fn cima(&self) -> Option<&char> {
-        None
+        self.elementos.last()
     }
 
     pub fn esta_vacia(&self) -> bool {
-        true
+        self.elementos.is_empty()
+    }
+
+    pub fn mostrar(&self) {
+        if self.elementos.is_empty() {
+            println!("Pila: Vacía");
+        } else {
+            print!("Pila: ");
+
+            for simbolo in &self.elementos {
+                print!("{}", simbolo);
+            }
+
+            println!();
+        }
     }
 }
