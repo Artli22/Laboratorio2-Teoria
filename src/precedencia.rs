@@ -16,3 +16,7 @@ pub fn obtener_precedencia(simbolo: char) -> u8 {
 pub fn es_operador_unario(operador: char) -> bool {
     matches!(operador, '*' | '+' | '?' | '^')
 }
+
+pub fn es_operador_binario(operador: char) -> bool {
+    matches!(operador, '|' | '.')
+}

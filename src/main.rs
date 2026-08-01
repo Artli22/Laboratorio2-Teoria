@@ -1,4 +1,3 @@
-mod balanceador;
 mod pila;
 mod precedencia;
 mod reglas;
@@ -7,12 +6,22 @@ mod shunting_yard;
 use std::fs;
 
 fn main() {
-    println!("==========================================");
-    println!(" Conversión Infix a Postfix - Shunting Yard");
-    println!("==========================================");
+    println!("============================================");
+    println!(" Conversión Infix a Postfix - Shunting Yard ");
+    println!("============================================");
 
-    let contenido = fs::read_to_string("expresiones_problema3.txt")
-        .expect("No fue posible abrir expresiones_problema3.txt");
+    let contenido = match fs::read_to_string("expresiones_problema3.txt") {
+        Ok(contenido) => contenido,
+
+        Err(error) => {
+            eprintln!(
+                "No fue posible abrir expresiones_problema3.txt: {}",
+                error
+            );
+
+            return;
+        }
+    };
 
     for (indice, linea) in contenido.lines().enumerate() {
         let expresion = linea.trim();
@@ -21,16 +30,26 @@ fn main() {
             continue;
         }
 
-        println!("\n------------------------------------------");
+        println!("\n============================================");
         println!("Expresión número {}", indice + 1);
-        println!("------------------------------------------");
+        println!("============================================");
 
         match shunting_yard::convertir_a_postfix(expresion) {
-            Ok(postfix) => {
-                println!("Resultado postfix: {}", postfix);
+            Ok(resultado) => {
+                println!("\nResultado:");
+                println!(
+                    "Postfix antes de convertir + y ?: {}",
+                    resultado.postfix_original
+                );
+
+                println!(
+                    "Postfix final: {}",
+                    resultado.postfix_convertido
+                );
             }
+
             Err(error) => {
-                println!("Estado actual: {}", error);
+                println!("\nError: {}", error);
             }
         }
     }

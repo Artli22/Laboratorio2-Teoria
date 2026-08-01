@@ -1,23 +1,25 @@
-pub struct Pila {
-    elementos: Vec<char>,
+use std::fmt::Display;
+
+pub struct Pila<T> {
+    elementos: Vec<T>,
 }
 
-impl Pila {
+impl<T> Pila<T> {
     pub fn nueva() -> Self {
         Self {
             elementos: Vec::new(),
         }
     }
 
-    pub fn insertar(&mut self, valor: char) {
+    pub fn insertar(&mut self, valor: T) {
         self.elementos.push(valor);
     }
 
-    pub fn extraer(&mut self) -> Option<char> {
+    pub fn extraer(&mut self) -> Option<T> {
         self.elementos.pop()
     }
 
-    pub fn cima(&self) -> Option<&char> {
+    pub fn cima(&self) -> Option<&T> {
         self.elementos.last()
     }
 
@@ -25,17 +27,25 @@ impl Pila {
         self.elementos.is_empty()
     }
 
-    pub fn mostrar(&self) {
+    pub fn longitud(&self) -> usize {
+        self.elementos.len()
+    }
+}
+
+impl<T: Display> Pila<T> {
+    pub fn como_texto(&self) -> String {
         if self.elementos.is_empty() {
-            println!("Pila: Vacía");
-        } else {
-            print!("Pila: ");
-
-            for simbolo in &self.elementos {
-                print!("{}", simbolo);
-            }
-
-            println!();
+            return String::from("Vacía");
         }
+
+        self.elementos
+            .iter()
+            .map(|elemento| elemento.to_string())
+            .collect::<Vec<String>>()
+            .join(" ")
+    }
+
+    pub fn mostrar(&self) {
+        println!("Pila: {}", self.como_texto());
     }
 }
